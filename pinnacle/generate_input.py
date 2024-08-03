@@ -62,10 +62,11 @@ def create_data(G, train_mask, val_mask, test_mask, node_type, edge_type, x):
 
 def read_global_ppi(f):
     # Read table from csv file
-    graph_df = pd.read_csv(f)
+    graph_df = pd.read_csv(f, sep=' ')
 
     # Create a list of tuples, where each tuple is an edge
-    edges = [(s, t) for s, t in zip(graph_df["protein1"].tolist(), graph_df["protein2"].tolist())]
+    # edges = [(s, t) for s, t in zip(graph_df["protein1"].tolist(), graph_df["protein2"].tolist())]
+    edges = list(zip(graph_df["protein1"].tolist(), graph_df["protein2"].tolist()))
 
     # Instantiate graph object
     G = nx.Graph()
@@ -78,12 +79,12 @@ def read_global_ppi(f):
 
 def read_data(G_f, ppi_dir, mg_f, feat_mat_dim):
 
-    # Read global PPI 
+    # Read global PPI
     #G = nx.read_edgelist(G_f)
     G = read_global_ppi(G_f)
 
     feat_mat = torch.normal(torch.zeros(len(G.nodes), feat_mat_dim), std=1)
-    
+
     # Read PPI layers
     orig_ppi_layers, ppi_layers, ppi_train, ppi_val, ppi_test = read_ppi(ppi_dir)
     print("Number of PPI layers:", len(ppi_layers), len(ppi_train), len(ppi_val), len(ppi_test))
@@ -92,7 +93,7 @@ def read_data(G_f, ppi_dir, mg_f, feat_mat_dim):
     metagraph = nx.read_edgelist(mg_f, data=False, delimiter = "\t", create_using=nx.DiGraph)
     assert nx.is_connected(metagraph.to_undirected())
     mg_feat_mat = torch.zeros(len(metagraph.nodes), feat_mat_dim)
-    
+
     orig_mg = metagraph
     print("Number of nodes:", len(metagraph.nodes), "Number of edges:", len(metagraph.edges))
     print(ppi_layers)
@@ -122,7 +123,7 @@ def read_data(G_f, ppi_dir, mg_f, feat_mat_dim):
     ppi_layers = {mg_mapping[k]: v for k, v in ppi_layers.items() if k in mg_mapping}
     ppi_train = {mg_mapping[k]: v for k, v in ppi_train.items() if k in mg_mapping}
     ppi_val = {mg_mapping[k]: v for k, v in ppi_val.items() if k in mg_mapping}
-    ppi_test = {mg_mapping[k]: v for k, v in ppi_test.items() if k in mg_mapping}    
+    ppi_test = {mg_mapping[k]: v for k, v in ppi_test.items() if k in mg_mapping}
     ppi_data = dict()
     for cluster, ppi in ppi_layers.items():
         ppi_nodetype = [2] * len(ppi.nodes) # protein nodes = 2
@@ -136,13 +137,13 @@ def read_data(G_f, ppi_dir, mg_f, feat_mat_dim):
 
     #  Set up edge attr dict
     edge_attr_dict = {"tissue_tissue": 0, "tissue_cell": 1, "cell_tissue": 2, "cell_cell": 3, "protein_protein": 4}
-    
+
     # Return celltype specific PPI network data
     return ppi_data, mg_data, edge_attr_dict, mg_mapping, tissue_neighbors, orig_ppi_layers, orig_mg
 
 
 def subset_ppi(num_subset, ppi_data, ppi_layers):
-    
+
     # Take a subset of PPI data objects
     new_ppi_data = dict()
     for celltype, ppi in ppi_data.items():

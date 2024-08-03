@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/anna_y/.conda/envs/pinnacle/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3621, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 136, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 163, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5198, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5206, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'protein1'
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "train.py", line 69, in <module>
+    ppi_data, mg_data, edge_attr_dict, celltype_map, tissue_neighbors, ppi_layers, metagraph = read_data(args.G_f, args.ppi_dir, args.mg_f, hparams['feat_mat'])
+  File "/home/anna_y/PINNACLE/pinnacle/generate_input.py", line 83, in read_data
+    G = read_global_ppi(G_f)
+  File "/home/anna_y/PINNACLE/pinnacle/generate_input.py", line 68, in read_global_ppi
+    edges = [(s, t) for s, t in zip(graph_df["protein1"].tolist(), graph_df["protein2"].tolist())]
+  File "/home/anna_y/.conda/envs/pinnacle/lib/python3.8/site-packages/pandas/core/frame.py", line 3505, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/anna_y/.conda/envs/pinnacle/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3623, in get_loc
+    raise KeyError(key) from err
+KeyError: 'protein1'

@@ -1,0 +1,43 @@
+{
+    "os": "Linux-3.10.0-1127.19.1.el7.x86_64-x86_64-with-glibc2.17",
+    "python": "3.8.13",
+    "heartbeatAt": "2024-08-03T18:04:48.334358",
+    "startedAt": "2024-08-03T18:04:40.805263",
+    "docker": null,
+    "cpu_count": 96,
+    "cuda": null,
+    "args": [
+        "--G_f",
+        "../data/networks/global_ppi_edgelist.txt",
+        "--ppi_dir",
+        "../data/networks/ppi_edgelists/",
+        "--mg_f",
+        "../data/networks/mg_edgelist.txt",
+        "--batch_size=8",
+        "--dropout=0.6",
+        "--feat_mat=1024",
+        "--hidden=64",
+        "--lmbda=0.1",
+        "--loader=graphsaint",
+        "--lr=0.01",
+        "--lr_cent=0.1",
+        "--n_heads=8",
+        "--output=16",
+        "--pc_att_channels=16",
+        "--theta=0.3",
+        "--wd=1e-05",
+        "--epochs=250"
+    ],
+    "state": "running",
+    "program": "train.py",
+    "codePath": "pinnacle/train.py",
+    "git": {
+        "remote": "https://github.com/annaliseyang/PINNACLE",
+        "commit": "ae10f933f8b766f94a5f1c09a0e77748703bdddf"
+    },
+    "email": "anna_y@mit.edu",
+    "root": "/home/anna_y/PINNACLE",
+    "host": "b4.private",
+    "username": "anna_y",
+    "executable": "/home/anna_y/.conda/envs/pinnacle/bin/python"
+}
